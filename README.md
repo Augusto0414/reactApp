@@ -11,5 +11,6 @@ All commands are run from the root of the project, from a terminal:
 # 👀Link del dockerhub
 
 ```plaintext
+# Usar la versión docker pull augusto04/react-todo:v1.0
 https://hub.docker.com/repository/docker/augusto04/react-todo/general
 ```
