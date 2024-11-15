@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Todo } from './types';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
+import { API_URL } from './config/constants';
 
 const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -13,17 +14,15 @@ const App: React.FC = () => {
     completed: false,
   });
 
-  const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
-  console.log("API Base URL:", import.meta.env.VITE_API_BASE_URL);
 
   const fetchTodos = useCallback(async () => {
     try {
-      const response = await axios.get(`${apiUrl}/todo`);
+      const response = await axios.get(`${API_URL}/todo`);
       setTodos(response.data);
     } catch (error) {
       console.error('Error al obtener tareas:', error);
     }
-  }, [apiUrl]);
+  }, [API_URL]);
 
   useEffect(() => {
     fetchTodos();
@@ -36,7 +35,7 @@ const App: React.FC = () => {
     }
 
     try {
-      const response = await axios.post(`${apiUrl}/todo`, newTodo);
+      const response = await axios.post(`${API_URL}/todo`, newTodo);
       setTodos([...todos, response.data]);
       setNewTodo({ id: '', title: '', description: '', completed: false });
     } catch (error) {
@@ -47,7 +46,7 @@ const App: React.FC = () => {
   const toggleTodoCompletion = async (id: string, completed: boolean) => {
     try {
       const updatedTodo = { ...todos.find(todo => todo.id === id), completed: !completed };
-      await axios.put(`${apiUrl}/todo/${id}`, updatedTodo);
+      await axios.put(`${API_URL}/todo/${id}`, updatedTodo);
       fetchTodos();
     } catch (error) {
       console.error('Error al actualizar la tarea:', error);
@@ -56,7 +55,7 @@ const App: React.FC = () => {
 
   const deleteTodo = async (id: string) => {
     try {
-      await axios.delete(`${apiUrl}/todo/${id}`);
+      await axios.delete(`${API_URL}/todo/${id}`);
       fetchTodos();
     } catch (error) {
       console.error('Error al eliminar la tarea:', error);
